@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Japón en familia 2027</title>
+<meta name="description" content="Guía familiar para decidir qué ver en Japón en julio de 2027: lugares, fotos, vídeos, mapas, votación e itinerarios.">
+<meta name="theme-color" content="#c8372d">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Japón en familia 2027">
+<meta property="og:description" content="Vota qué ver: lugares, fotos, vídeos, mapas e itinerarios.">
+<meta property="og:image" content="img/og.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://nllbgtcuxisbugftehui.supabase.co">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Shippori+Mincho:wght@600;800&display=swap">
+<link rel="stylesheet" href="assets/css/app.css?v=1795632284">
+<script src="assets/js/data.js?v=1795632284" defer></script>
+<script src="assets/js/app.js?v=1795632284" defer></script>
+</head>
+<body>
+<header class="cover"><div class="wrap">
+  <div style="min-width:0">
+    <div class="eyebrow">VIAJE FAMILIAR · JULIO 2027</div>
+    <h1>Japón en familia<span class="jp">日本 二〇二七</span></h1>
+    <p class="lede">La guía para decidir entre los cuatro qué ver y qué no. Escribe tu nombre, vota Sí, Quizás o No en cada sitio y abajo verás lo que ha elegido la familia, los mapas por ciudad y los siete itinerarios posibles.</p>
+    <div class="who local" id="who"><span class="dot"></span><p id="whoTxt">Conectando con la votación…</p>
+      <form id="nameForm" class="row" style="flex:1 1 100%;gap:8px"><label class="lbl" for="myName">Tu nombre</label><input type="search" id="myName" maxlength="30" placeholder="Tu nombre" autocomplete="off" style="flex:1 1 160px"><button type="submit" class="btn primary">Guardar nombre</button></form></div>
+    <div class="tally" id="tally"></div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="ptxt" id="ptxt"></div>
+  </div>
+  <div class="mosaic" id="mosaic"></div>
+</div></header>
+
+<nav class="sec" aria-label="Secciones"><div class="wrap">
+  <a href="#lugares" class="on">Lugares <small>場所</small></a>
+  <a href="#mapas">Mapas <small>地図</small></a>
+  <a href="#elegido">Lo elegido <small>決定</small></a>
+  <a href="#itinerarios">Itinerarios <small>旅程</small></a>
+  <a href="#avisos">Comprobado <small>確認</small></a>
+  <a href="#comparativa">Agencia o libre <small>比較</small></a>
+  <a href="#reservas">Reservas <small>予約</small></a>
+  <a href="#julio">Julio <small>七月</small></a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="lugares">
+  <div class="sec-head"><div class="kanji">場所</div><div>
+    <h2>Lugares y experiencias</h2>
+    <p>Votad en cada tarjeta. Pulsad la foto para ver la ficha completa con galería, qué ver, precio, cómo llegar, mapa, en qué itinerario está y vídeos. Las etiquetas dicen si el sitio está en <span class="plan J">Japonal</span>, en el <span class="plan E">Excel</span> o es una <span class="plan N">idea nueva</span>.</p>
+  </div></div>
+  <div class="filters">
+    <div class="chips" id="catChips" role="group" aria-label="Gustos"></div>
+    <div class="row">
+      <span class="lbl">Decisión</span>
+      <div class="seg" role="group" aria-label="Decisión" id="stSeg">
+        <button type="button" data-st="all" aria-pressed="true">Todos</button>
+        <button type="button" data-st="mine" aria-pressed="false">Me falta votar</button>
+        <button type="button" data-st="sel" aria-pressed="false">Elegidos</button>
+        <button type="button" data-st="duda" aria-pressed="false">En duda</button>
+        <button type="button" data-st="desc" aria-pressed="false">Descartados</button>
+      </div>
+    </div>
+    <div class="row">
+      <label class="lbl" for="city">Ciudad</label>
+      <select id="city"></select>
+      <div class="seg" role="group" aria-label="Plan" id="planSeg">
+        <button type="button" data-plan="all" aria-pressed="true">Todo</button>
+        <button type="button" data-plan="J" aria-pressed="false">Japonal</button>
+        <button type="button" data-plan="E" aria-pressed="false">Excel</button>
+        <button type="button" data-plan="N" aria-pressed="false">Ideas nuevas</button>
+      </div>
+      <input type="search" id="q" placeholder="Buscar: ramen, Pokémon, protector solar…" aria-label="Buscar">
+    </div>
+    <div class="status" id="count"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="mapas">
+  <div class="sec-head"><div class="kanji">地図</div><div>
+    <h2>Mapas por zona</h2>
+    <p>Mapa real: arrastrad y haced zoom con los dedos. Cada punto es un sitio de la guía, coloreado por <b>votos de la familia</b> (qué vamos a ver y qué no) o por <b>itinerario</b> (qué entra en ese plan y qué se queda fuera). Pulsad un punto para abrir su ficha.</p>
+  </div></div>
+  <div class="maptabs" id="mapTabs"></div>
+  <div class="mapwrap">
+    <div class="mapbox">
+      <div class="mapbar">
+        <div class="row"><label class="lbl" for="mapMode">Colorear por</label><select id="mapMode"></select></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div id="leafMap" class="leaf" role="region" aria-label="Mapa interactivo"></div>
+    </div>
+    <div class="maplist" id="mapList"></div>
+  </div>
+</section>
+
+<section id="elegido">
+  <div class="sec-head"><div class="kanji">決定</div><div>
+    <h2>Lo que hemos elegido</h2>
+    <p>Resumen de la votación por ciudad. Un sitio queda <span class="badge sel">Elegido</span> cuando gana el sí, <span class="badge duda">En duda</span> si hay empate o quizás, y <span class="badge desc">Descartado</span> cuando gana el no.</p>
+  </div></div>
+  <div class="row" style="margin-bottom:14px"><button type="button" class="btn primary" id="copySum">Copiar resumen para WhatsApp</button></div>
+  <div class="summary" id="summary"></div>
+</section>
+
+<section id="itinerarios">
+  <div class="sec-head"><div class="kanji">旅程</div><div>
+    <h2>Los siete itinerarios</h2>
+    <p>La propuesta de Japonal y las seis opciones del Excel. Cada tarjeta dice cuántos de los sitios elegidos por la familia cubre. Elegid dos para compararlos día a día; los botones de cada día abren la ficha del sitio, con un punto de color según vuestro voto.</p>
+  </div></div>
+  <div class="plans" id="plans"></div>
+  <div class="pickers">
+    <span class="lab A">A</span><select id="selA" aria-label="Itinerario A"></select>
+    <span class="lab B">B</span><select id="selB" aria-label="Itinerario B"></select>
+  </div>
+  <div class="plan-detail" id="planDetail"></div>
+  <div class="days" id="days"></div>
+</section>
+
+<section id="avisos">
+  <div class="sec-head"><div class="kanji">確認</div><div>
+    <h2>Lo que he comprobado y ha cambiado</h2>
+    <p>Revisión de noticias y webs oficiales a 25 de noviembre de 2026. Lo que ya no se puede visitar se ha quitado de la guía.</p>
+  </div></div>
+  <div class="checks" id="checks"></div>
+</section>
+
+<section id="comparativa">
+  <div class="sec-head"><div class="kanji">比較</div><div>
+    <h2>Japonal frente a hacerlo por libre</h2>
+    <p>Mismas fechas (3 al 15 de julio, 10 noches). Japonal según el PDF del 24/11/2026; por libre según el Panel Comparativo del Excel (Opción 1, sin comidas diarias).</p>
+  </div></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th></th><th>Japonal (agencia)</th><th>Por libre (Excel, Opción 1)</th></tr></thead>
+    <tbody>
+      <tr><th>Precio</th><td><span class="big num">12.220 €</span><br><span class="num">3.055 € por persona</span>, con desayunos</td><td><span class="big num">10.114 €</span><br><span class="num">2.529 € por persona</span>, sin comidas diarias</td></tr>
+      <tr><th>Ruta</th><td>Osaka 2n · Miyajima 1n (ryokan) · Kioto 3n · Tokio 4n</td><td>Tokio 4n · Hakone 1n (ryokan) · Kioto 3n · Osaka 2n</td></tr>
+      <tr><th>Vuelos</th><td>Qatar Airways, escala en Doha (2 h ida / 3 h 05 vuelta). Madrid → Osaka; Tokio-Narita → Madrid. 25 kg</td><td>Cathay Pacific, escala en Hong Kong. Madrid → Tokio; Osaka → Madrid. 23 kg. 3.574 €, no reembolsable y aún sin comprar</td></tr>
+      <tr><th>Habitaciones</th><td>1 cuádruple por hotel</td><td>2 habitaciones (1 doble + 1 twin), cancelables</td></tr>
+      <tr><th>Visitas guiadas</th><td>Tour privado 8 h en español en Kioto y Tokio · Fuji en minivan con guía</td><td>Tour privado 8 h en Kioto y Tokio (Civitatis) · free tours · Fuji solo en Opción 2</td></tr>
+      <tr><th>Trenes</th><td>JR Kansai-Hiroshima Area Pass · tren bala Kioto–Tokio y Tokio–Shin-Fuji · traslados privados aeropuerto</td><td>Billetes sueltos (SmartEX), tarjeta IC, Hakone Free Pass, envío de maletas. Sin traslados privados</td></tr>
+      <tr><th>Experiencias</th><td>Regalo a elegir (Skytree, ceremonia del té o kimono) si se confirma en 7 días</td><td>Shibuya Sky, teamLab, entradas, sake, cena de Kobe A5, ceremonia del té</td></tr>
+      <tr><th>Seguro y datos</th><td>Multiasistencia VIP de Intermundial (médico hasta 5 M€ en el mundo, con anulación) · 4 eSIM</td><td>IATI o Heymondo con anulación · 4 eSIM (472 € juntos)</td></tr>
+      <tr><th>En destino</th><td>App, WhatsApp en español desde Japón, mapas, guía en papel</td><td>Vosotros, con el Excel y Google Maps</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cols2">
+    <div class="panel">
+      <h3>Comparando lo mismo con lo mismo</h3>
+      <table class="calc">
+        <tr><td>Japonal, 4 personas</td><td>12.220 €</td></tr>
+        <tr><td>Shibuya Sky + teamLab</td><td>180 €</td></tr>
+        <tr><td>Entradas templos, Nara y castillo</td><td>180 €</td></tr>
+        <tr><td>Cata de sake + cena de Kobe A5</td><td>720 €</td></tr>
+        <tr><td>Free tours (propinas)</td><td>100 €</td></tr>
+        <tr><td>Metro y trenes urbanos (estimado)</td><td>≈ 230 €</td></tr>
+        <tr><td>Ceremonia del té (regalo)</td><td>0 €</td></tr>
+        <tr class="tot"><td>Japonal equivalente</td><td>≈ 13.630 €</td></tr>
+        <tr class="tot"><td>Por libre (Excel)</td><td>10.114 €</td></tr>
+        <tr class="tot"><td style="color:var(--shu)">Diferencia</td><td style="color:var(--shu)">≈ 3.500 € (≈ 880 €/pers.)</td></tr>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Qué compra esa diferencia</h3>
+      <ul>
+        <li>Desayunos en todos los hoteles y la cena kaiseki del ryokan.</li>
+        <li>Traslados privados aeropuerto–hotel a la ida y a la vuelta.</li>
+        <li>Excursión al Fuji en minivan con grupo reducido.</li>
+        <li>Asistencia en español desde Japón si algo falla.</li>
+        <li>No tener que reservar nada vosotros.</li>
+      </ul>
+      <p style="margin:10px 0 0;font-size:14px;color:var(--muted)">En contra: una sola habitación para los cuatro y solo día y medio libre en Tokio, donde están casi todos los planes de anime y compras.</p>
+    </div>
+  </div>
+  <div class="note">
+    <b>Preguntas para la videollamada con Japonal</b>
+    <ul style="margin:6px 0 0;padding-left:18px;display:grid;gap:4px">
+      <li>¿Precio cambiando Miyajima por una noche más en Tokio?</li>
+      <li>¿Precio con 2 habitaciones dobles en lugar de una cuádruple?</li>
+      <li>Pagos: el correo dice 50 % ahora y 50 % unos 45 días antes; el PDF dice unos 70 días antes. ¿Cuál vale?</li>
+      <li>¿Cuánto cubre la anulación del seguro VIP para el resto del mundo?</li>
+      <li>¿Están incluidas la tasa de salida de Japón (3.000 ¥ desde julio de 2026) y la tasa turística de Kioto?</li>
+      <li>¿Hasta qué día exacto vale el regalo del Black Friday?</li>
+    </ul>
+  </div>
+</section>
+
+<section id="reservas">
+  <div class="sec-head"><div class="kanji">予約</div><div>
+    <h2>Qué reservar y cuándo</h2>
+    <p>Basado en la hoja de enlaces del Excel, con las fechas corregidas tras la revisión. Japón va 7 h por delante de España en verano.</p>
+  </div></div>
+  <div class="timeline">
+    <div class="tl"><div class="when">Esta semana</div><ul><li>Decidir agencia o por libre. El regalo de Japonal caduca a los 7 días de la propuesta.</li><li>Por libre: bloquear hoteles con cancelación gratis en Booking o Agoda.</li><li>Por libre: comprar vuelos y, en los 7 días siguientes, el seguro con anulación.</li></ul></div>
+    <div class="tl"><div class="when">Ene – mar 2027</div><ul><li>Ryokan de Hakone con media pensión (Japanican).</li><li>Guías privados en español de Tokio y Kioto (Civitatis).</li></ul></div>
+    <div class="tl"><div class="when">Feb – may 2027</div><ul><li>Cata de sake en Fushimi.</li><li>Excursión al Fuji (Opción 2 del Excel).</li></ul></div>
+    <div class="tl"><div class="when">Abr – may 2027</div><ul><li>Cena de Kobe A5 en Mouriya (unos 2 meses antes).</li><li>Japonal: unos 70 días antes os piden los extras.</li></ul></div>
+    <div class="tl"><div class="when">Mayo 2027</div><ul><li>teamLab Planets, Universal Studios y Tokyo DisneySea (unos 2 meses antes).</li><li>15 mayo: entradas del torneo de sumo de Nagoya.</li></ul></div>
+    <div class="tl"><div class="when">Junio 2027</div><ul><li>Pokémon Café: abren el mes completo en una fecha que anuncian en su web (suele ser el día 1 del mes anterior a las 18:00 de Japón, 11:00 en España).</li><li>Tren bala por SmartEX (30 días antes) y eSIM.</li></ul></div>
+    <div class="tl"><div class="when">10 jun 2027</div><ul><li>Museo Ghibli: entradas de julio a las 10:00 de Japón (03:00 en España).</li></ul></div>
+    <div class="tl"><div class="when">~2 semanas antes</div><ul><li>Shibuya Sky (el Excel dice 4 semanas; ahora son unas 2). Franja de atardecer.</li></ul></div>
+    <div class="tl"><div class="when">72 h antes</div><ul><li>Visit Japan Web: QR de inmigración y aduanas. También agiliza las compras tax-free.</li><li>Comprobar si ya se exige la autorización electrónica JESTA (prevista para 2028).</li></ul></div>
+  </div>
+</section>
+
+<section id="julio">
+  <div class="sec-head"><div class="kanji">七月</div><div><h2>Julio en Japón</h2></div></div>
+  <div class="cols2">
+    <div class="panel"><h3>Calor y humedad</h3><p style="margin:0;font-size:14px">Entre 30 y 35 °C con mucha humedad. La temporada de lluvias suele terminar a mediados de mes. Lo exterior, a primera hora; bebidas de las máquinas (hay en cada esquina), toallita y abanico.</p></div>
+    <div class="panel"><h3>El Fuji, a menudo tapado</h3><p style="margin:0;font-size:14px">En verano se ve muchos menos días que en invierno. La excursión de Japonal adapta la ruta al tiempo; tened un plan B para días nublados.</p></div>
+    <div class="panel"><h3>Fiestas que os pillan</h3><p style="margin:0;font-size:14px">Tanabata el 7, Gion Matsuri en Kioto todo el mes (noches grandes del 14 al 16, desfile el 17), torneo de sumo en Nagoya del 11 al 25 y lavanda en el lago Kawaguchi.</p></div>
+    <div class="panel"><h3>Compras sin impuestos</h3><p style="margin:0;font-size:14px">Desde el 1 de noviembre de 2026 se paga el impuesto en la tienda y se recupera al salir de Japón, en la aduana del aeropuerto. Pasaporte siempre encima y las compras a mano para enseñarlas.</p></div>
+  </div>
+</section>
+
+</main>
+<footer class="wrap">Fotos: Wikipedia y Wikimedia Commons (licencias libres, uso personal). Mapas: © colaboradores de OpenStreetMap. Vídeos de YouTube incrustados. Precios del Excel <i>Planificador_Japon_2027_Interactivo-V5</i> y de la propuesta de Japonal del 24/11/2026; pueden cambiar hasta reservar.</footer>
+
+<dialog class="sheet" id="sheet" aria-labelledby="shTitle"><div class="sh" id="sh"></div></dialog>
+<div class="toast" id="toast" hidden></div>
+
+
+</body>
+</html>
