@@ -31,7 +31,7 @@ function copyText(txt,ok){const fb=()=>{const ta=document.createElement('textare
 /* ================= votos (Supabase) ================= */
 const SB_URL='https://nllbgtcuxisbugftehui.supabase.co',SB_KEY='sb_publishable_K72sRnpGjnm6f7_rJ_G-Dw_iGzBIK3W';
 const SBH={apikey:SB_KEY,'Content-Type':'application/json'};
-const V={online:null,canWrite:true,docs:{},me:'',saved:null,busy:0};
+const V={online:null,canWrite:true,docs:{},me:'',saved:null,busy:0,lastWrite:0};
 try{V.me=(localStorage.getItem('jp27-name')||'').trim()}catch(e){}
 try{const c=JSON.parse(localStorage.getItem('jp27-votes')||'{}');if(V.me&&c&&typeof c==='object')V.docs[V.me]=c}catch(e){}
 const myVotes=()=>V.me?(V.docs[V.me]||(V.docs[V.me]={})):{};
@@ -42,26 +42,27 @@ const initials=uid=>(uid.trim()[0]||'?').toUpperCase();
 const nameOf=uid=>uid===V.me?uid+' (tú)':uid;
 const cacheMine=()=>{try{localStorage.setItem('jp27-votes',JSON.stringify(myVotes()))}catch(e){}};
 async function sbLoad(){
+  const started=Date.now();
   try{
     const r=await fetch(SB_URL+'/rest/v1/votes?select=person,item,vote&limit=10000',{headers:SBH,cache:'no-store'});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const rows=await r.json();const docs={};
     rows.forEach(x=>{if(x&&typeof x.person==='string'&&BYID[x.item]&&VL[x.vote])(docs[x.person]=docs[x.person]||{})[x.item]=x.vote});
-    if(V.busy&&V.me)docs[V.me]=Object.assign({},myVotes());
+    if(V.me&&(V.busy||V.lastWrite>=started))docs[V.me]=Object.assign({},myVotes());
     V.docs=docs;V.online=true;cacheMine();
   }catch(e){V.online=false}
   refreshVotes();
 }
 async function setVote(id,v){
   if(!V.me){toast('Escribe tu nombre arriba para poder votar');const n=$('#myName');n.scrollIntoView({behavior:'smooth',block:'center'});n.focus();return}
-  const m=myVotes();const del=m[id]===v;if(del)delete m[id];else m[id]=v;cacheMine();refreshVotes();
+  V.lastWrite=Date.now();const m=myVotes();const del=m[id]===v;if(del)delete m[id];else m[id]=v;cacheMine();refreshVotes();
   V.busy++;
   try{
     let r;
     if(del)r=await fetch(SB_URL+'/rest/v1/votes?person=eq.'+encodeURIComponent(V.me)+'&item=eq.'+encodeURIComponent(id),{method:'DELETE',headers:SBH});
     else r=await fetch(SB_URL+'/rest/v1/votes?on_conflict=person,item',{method:'POST',headers:Object.assign({Prefer:'resolution=merge-duplicates,return=minimal'},SBH),body:JSON.stringify({person:V.me,item:id,vote:v,updated_at:new Date().toISOString()})});
     if(!r.ok)throw new Error('HTTP '+r.status);
-    V.saved=new Date();V.online=true;
+    V.saved=new Date();V.online=true;V.lastWrite=Date.now();
   }catch(e){V.online=false;toast('No se ha podido guardar el voto. Comprueba la conexión y vuelve a pulsar.')}
   finally{V.busy--;setWho()}
 }
